@@ -15,6 +15,11 @@
         <li>
             <img src="{{ artist_info.url_img_cover }}" alt="">
             <span>{{ artist_info.artist_id }} | {{ artist_info.name }}</span>
+            <form action="{% url 'artist:artist-add-from-melon' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="artist_id" value="{{ artist_info.artist_id }}">
+                <button type="submit">DB에 추가하기</button>
+            </form>
         </li>
         {% endfor %}
     </ul>

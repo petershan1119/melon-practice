@@ -12,7 +12,9 @@
     <ul>
         {% for song_info in song_info_list %}
         <li>
-            <span>{{ song_info.album }} | {{ song_info.title }}</span>
+            <img src="{{ song_info.url_img_cover }}" alt="">
+            <span>{{ song_info.artist }} | {{ song_info.album }} | {{ song_info.title }} | {{ song_info.genre }}</span>
+            <p>{{ song_info.lyrics }}</p>
         </li>
         {% endfor %}
     </ul>
