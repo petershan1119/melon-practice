@@ -19,6 +19,10 @@ class Album(models.Model):
     )
     release_date = models.DateField()
 
+    @property
+    def genre(self):
+        return ', '.join(self.song_set.values_list('genre', flat=True)).distinct()
+
     def __str__(self):
         return '{title} [{artists}]'.format(
             title=self.title,
