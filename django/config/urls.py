@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('artist/', include('artist.urls')),
     path('album/', include('album.urls')),
+    path('song/', include('song.urls')),
 ]

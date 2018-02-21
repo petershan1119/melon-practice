@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'artist.apps.ArtistConfig',
     'album.apps.AlbumConfig',
+    'song.apps.SongConfig',
 
     'django_extensions',
 
