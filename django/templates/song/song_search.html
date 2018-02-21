@@ -3,32 +3,14 @@
 
 <div>
     <h1><a href="{% url 'song:song-search' %}">노래 검색</a></h1>
-    <form action="" method="POST">
-        {% csrf_token %}
+    <form action="">
         <input type="text" name="keyword">
         <button type="submit">검색</button>
     </form>
 
-    <h3>아티스트명에 포함</h3>
-    <ul>
-        {% for song in songs_from_artists %}
-        <li>{{ song.title }}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>앨범명에 포함</h3>
-    <ul>
-        {% for song in songs_from_albums %}
-        <li>{{ song.title }}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>노래제목에 포함</h3>
-    <ul>
-        {% for song in songs_from_title %}
-        <li>{{ song.title }}</li>
-        {% endfor %}
-    </ul>
+    {% for song_info in song_infos %}
+        {% include 'include/song_search_result.html' with type=song_info.type songs=song_info.songs only %}
+    {% endfor %}
 </div>
 
 {% endblock %}

@@ -29,7 +29,7 @@ def artist_search_from_melon(request):
     if request.method == "POST":
         keyword = request.POST['keyword']
         if keyword:
-            artist_info_list = []=
+            artist_info_list = []
             url = 'https://www.melon.com/search/artist/index.htm'
             params = {
                 'q': keyword,

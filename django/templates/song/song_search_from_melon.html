@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <h3>멜론에서 노래 검색</h3>
+    <form action="">
+        <input type="text" name="keyword" placeholder="노래명">
+        <button type="submit">검색</button>
+
+    </form>
+
+    <ul>
+        {% for song_info in song_info_list %}
+        <li>
+            <span>{{ song_info.album }} | {{ song_info.title }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}
