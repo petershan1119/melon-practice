@@ -5,11 +5,14 @@ from pathlib import Path
 import requests
 from typing import NamedTuple
 from bs4 import BeautifulSoup, NavigableString
+from datetime import datetime
 from django.core.files import File
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from album.models import Album
+from artist.models import Artist
+from crawler.artist import ArtistData
 from .models import Song
 
 
@@ -230,6 +233,51 @@ def song_add_from_melon(request):
         else:
             lyrics = '가사가 없습니다'
 
+
+
+        artist = ArtistData(artist_id)
+        artist.get_detail()
+
+        name = artist.name
+        url_img_cover = artist.url_img_cover
+        url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
+        real_name = artist.personal_information.get('본명', '')
+        nationality = artist.personal_information.get('국적', '')
+        birth_date_str = artist.personal_information.get('생일', '')
+        if not birth_date_str or len(birth_date_str) <= 9:
+            birth_date_str = '1900.01.01'
+        constellation = artist.personal_information.get('별자리', '')
+        blood_type = artist.personal_information.get('혈액형', '')
+
+        for short, full in Artist.CHOICES_BLOOD_TYPE:
+            if blood_type.strip() == full:
+                blood_type = short
+                break
+            else:
+                blood_type = Artist.BLOOD_TYPE_OTHER
+
+        response = requests.get(url_img_cover)
+        binary_data = response.content
+        temp_file = BytesIO()
+        temp_file.write(binary_data)
+        temp_file.seek(0)
+
+        artist, _ = Artist.objects.update_or_create(
+            melon_id=artist_id,
+            defaults={
+                'name': name,
+                'real_name': real_name,
+                'nationality': nationality,
+                'birth_date': datetime.strptime(birth_date_str, '%Y.%m.%d'),
+                'constellation': constellation,
+                'blood_type': blood_type,
+            }
+        )
+
+
+        file_name = Path(url_img_cover).name
+        artist.img_profile.save(file_name, File(temp_file))
+
         if Album.objects.get(title=album):
             response = requests.get(url_img_cover)
             binary_data = response.content
@@ -247,6 +295,8 @@ def song_add_from_melon(request):
                 }
             )
 
+            song.artists.add(artist)
+            
             file_name = Path(url_img_cover).name
             song.img_cover.save(file_name, File(temp_file))
     return redirect('song:song-list')
