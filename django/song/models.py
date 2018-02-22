@@ -72,16 +72,6 @@ class SongManager(models.Manager):
         temp_file.write(binary_data)
         temp_file.seek(0)
 
-        song, song_created = Song.objects.update_or_create(
-            song_id=song_id,
-            defaults={
-                # 'album': Album.objects.get(title=album),
-                'title': title,
-                'genre': genre,
-                'lyrics': lyrics,
-            }
-        )
-
         # artist = ArtistData(artist_id)
         # artist.get_detail()
         #
@@ -123,6 +113,20 @@ class SongManager(models.Manager):
         #
         # file_name = Path(url_img_cover).name
         # artist.img_profile.save(file_name, File(temp_file))
+        #
+        album, _ = Album.objects.update_or_create_from_melon(album_id)
+        # song.album.add(album)
+
+        song, song_created = Song.objects.update_or_create(
+            song_id=song_id,
+            defaults={
+                # 'album': Album.objects.get(title=album),
+                'title': title,
+                'genre': genre,
+                'lyrics': lyrics,
+                'album': album,
+            }
+        )
 
         artist, _ = Artist.objects.update_or_create_from_melon(artist_id)
         song.artists.add(artist)

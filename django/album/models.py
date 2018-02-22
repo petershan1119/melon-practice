@@ -1,9 +1,74 @@
+import re
+from io import BytesIO
+from pathlib import Path
+
+import requests
+from bs4 import BeautifulSoup
+from datetime import datetime
+from django.core.files import File
 from django.db import models
 
 from artist.models import Artist
+from crawler.utils.parsing import get_dict_from_dl
+
+
+class AlbumManager(models.Manager):
+    def update_or_create_from_melon(self, album_id):
+        url = 'https://www.melon.com/album/detail.htm'
+        params = {
+            'albumId': album_id,
+        }
+        response = requests.get(url, params)
+        soup = BeautifulSoup(response.text, 'lxml')
+        info = soup.select_one('div.section_info')
+        entry = info.select_one('div.entry')
+        src = info.select_one('div.thumb img').get('src')
+
+        title = entry.select_one('div.info > .song_name').contents[2].strip()
+        url_img_cover = re.search(r'(.*?)/melon/quality.*', src).group(1)
+        if re.findall('http.*?\.jpg', url_img_cover):
+            url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
+        else:
+            url_img_cover = "http://cdnimg.melon.co.kr/resource/image/web/default/noAlbum_500_160727.jpg"
+
+        meta_dict = get_dict_from_dl(entry.select_one('div.meta dl'))
+
+        response = requests.get(url_img_cover)
+        binary_data = response.content
+        temp_file = BytesIO()
+        temp_file.write(binary_data)
+        temp_file.seek(0)
+
+        try:
+            release_date = datetime.strptime(meta_dict['발매일'], '%Y.%m.%d')
+        except ValueError:
+            try:
+                release_date = datetime.strptime(meta_dict['발매일'], '%Y.%m')
+            except ValueError:
+                try:
+                    release_date = datetime.strptime(meta_dict['발매일'], '%Y')
+                except ValueError:
+                    release_date = None
+
+        album, album_created = Album.objects.update_or_create(
+            melon_id=album_id,
+            defaults={
+                'title': title,
+                'release_date': release_date,
+            }
+        )
+        file_name = Path(url_img_cover).name
+        album.img_cover.save(file_name, File(temp_file))
+        return album, album_created
 
 
 class Album(models.Model):
+    melon_id = models.CharField(
+        '멜론 Album ID',
+        max_length=20,
+        blank=True,
+        null=True,
+    )
     title = models.CharField(
         '앨범명',
         max_length=100,
@@ -17,7 +82,9 @@ class Album(models.Model):
     #     Artist,
     #     verbose_name='아티스트 목록',
     # )
-    release_date = models.DateField()
+    release_date = models.DateField(blank=True, null=True)
+
+    objects = AlbumManager()
 
     @property
     def genre(self):

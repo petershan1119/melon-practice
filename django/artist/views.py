@@ -60,47 +60,20 @@ def artist_search_from_melon(request):
     return render(request, 'artist/artist_search_from_melon.html', context)
 
 def artist_add_from_melon(request):
+    """
+    1. artist_search_from_melon.html에
+        form을 작성 (action이 현재 이 view로 올 수 있도록), POST메서드
+            필요한 요소는 csrf_token과
+                type=hidden으로 전달하는 artist_id값
+                <input type="hidden" value="{{ artist_info.artist_id }}">
+                button submit (추가하기)
+    2. 작성한 form
+    POST요청을 받음 (추가하기 버튼 클릭)
+    request.POST['artist_id']
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         artist_id = request.POST['artist_id']
-        artist = ArtistData(artist_id)
-        artist.get_detail()
-
-        name = artist.name
-        url_img_cover = artist.url_img_cover
-        url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
-        real_name = artist.personal_information.get('본명', '')
-        nationality = artist.personal_information.get('국적', '')
-        birth_date_str = artist.personal_information.get('생일', '')
-        if not birth_date_str or len(birth_date_str) <= 8:
-            birth_date_str = '1900.01.01'
-        constellation = artist.personal_information.get('별자리', '')
-        blood_type = artist.personal_information.get('혈액형', '')
-
-        for short, full in Artist.CHOICES_BLOOD_TYPE:
-            if blood_type.strip() == full:
-                blood_type = short
-                break
-        else:
-            blood_type = Artist.BLOOD_TYPE_OTHER
-
-        response = requests.get(url_img_cover)
-        binary_data = response.content
-        temp_file = BytesIO()
-        temp_file.write(binary_data)
-        temp_file.seek(0)
-
-        artist, _ = Artist.objects.update_or_create(
-            melon_id=artist_id,
-            defaults={
-                'name': name,
-                'real_name': real_name,
-                'nationality': nationality,
-                'birth_date': datetime.strptime(birth_date_str, '%Y.%m.%d'),
-                'constellation': constellation,
-                'blood_type': blood_type,
-            }
-        )
-
-        file_name = Path(url_img_cover).name
-        artist.img_profile.save(file_name, File(temp_file))
+        Artist.objects.update_or_create_from_melon(artist_id)
         return redirect('artist:artist-list')

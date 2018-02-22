@@ -23,8 +23,18 @@ class ArtistManager(models.Manager):
         real_name = artist.personal_information.get('본명', '')
         nationality = artist.personal_information.get('국적', '')
         birth_date_str = artist.personal_information.get('생일', '')
-        if not birth_date_str or len(birth_date_str) <= 9:
-            birth_date_str = '1900.01.01'
+
+        try:
+            birth_date = datetime.strptime(birth_date_str, '%Y.%m.%d')
+        except ValueError:
+            try:
+                birth_date = datetime.strptime(birth_date_str, '%Y.%m')
+            except ValueError:
+                try:
+                    birth_date = datetime.strptime(birth_date_str, '%Y')
+                except ValueError:
+                    birth_date = None
+
         constellation = artist.personal_information.get('별자리', '')
         blood_type = artist.personal_information.get('혈액형', '')
 
@@ -47,7 +57,7 @@ class ArtistManager(models.Manager):
                 'name': name,
                 'real_name': real_name,
                 'nationality': nationality,
-                'birth_date': datetime.strptime(birth_date_str, '%Y.%m.%d'),
+                'birth_date': birth_date,
                 'constellation': constellation,
                 'blood_type': blood_type,
             }
