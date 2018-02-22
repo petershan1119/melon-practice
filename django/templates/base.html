@@ -9,10 +9,16 @@
     <title>Melon archive</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/artist_list.css' %}">
 </head>
 <body>
 <div class="header-wrap">
     <header class="main-header">
+        {% if request.user.is_authenticated %}
+        <div>{{ request.user }}로 로그인 중입니다</div>
+        {% else %}
+        <div><a href="{% url 'login' %}">로그인하세요</a></div>
+        {% endif %}
         <div class="search-container">
             <a href="{% url 'index' %}">
                 <img src="{% static 'images/logo.png' %}" alt="">

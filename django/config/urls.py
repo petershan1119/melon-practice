@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from members.views import login_view
 from . import views
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('artist/', include('artist.urls')),
     path('album/', include('album.urls')),
     path('song/', include('song.urls')),
+    path('login/', login_view, name='login'),
 ]
 
 urlpatterns += static(

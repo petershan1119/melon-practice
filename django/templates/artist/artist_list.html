@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<ul>
-    {% for artist in artists %}
-    <li>{{ artist.name }}</li>
-    {% endfor %}
-</ul>
+<div class="artist-list-container">
+    <ul class="clearfix">
+        {% for artist in artists %}
+        <li class="clearfix">
+            <a href="">
+                <img src="{% if artist.img_profile %}{{ artist.img_profile.url }}{% endif %}" alt="" class="cover">
+                <div class="artist-info">
+                    <div class="name">{{ artist.name }}</div>
+                    <div>{{ artist.nationality }}</div>
+                    <div>{{ artist.birth_date }}</div>
+                    <div>{{ artist.constellation }}</div>
+                    <div>{{ artist.blood_type }}</div>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

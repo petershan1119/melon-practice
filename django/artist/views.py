@@ -71,7 +71,7 @@ def artist_add_from_melon(request):
         real_name = artist.personal_information.get('본명', '')
         nationality = artist.personal_information.get('국적', '')
         birth_date_str = artist.personal_information.get('생일', '')
-        if not birth_date_str or len(birth_date_str) :
+        if not birth_date_str or len(birth_date_str) <= 8:
             birth_date_str = '1900.01.01'
         constellation = artist.personal_information.get('별자리', '')
         blood_type = artist.personal_information.get('혈액형', '')
@@ -80,8 +80,8 @@ def artist_add_from_melon(request):
             if blood_type.strip() == full:
                 blood_type = short
                 break
-            else:
-                blood_type = Artist.BLOOD_TYPE_OTHER
+        else:
+            blood_type = Artist.BLOOD_TYPE_OTHER
 
         response = requests.get(url_img_cover)
         binary_data = response.content

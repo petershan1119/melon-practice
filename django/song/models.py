@@ -13,6 +13,10 @@ from artist.models import Artist
 
 class SongManager(models.Manager):
     def update_or_create_from_song_id(self, song_id):
+        """
+        Song의 Album정보도 가져와서 AlbumManager.update_or_create_from_melon도 실행
+            -> Album의 커버이미지도 저장
+        """
         url_song = 'https://www.melon.com/song/detail.htm'
         params_song = {
             'songId': song_id,
