@@ -1,0 +1,40 @@
+.header-wrap {
+  border-bottom: 1px solid gray;
+}
+
+.header-wrap header.main-header {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.header-wrap header.main-header > .search-container > .input-container {
+  margin: 36px 0 0 11px;
+  vertical-align: top;
+  display: inline-block;
+  width: 322px;
+  height: 40px;
+  background: url(/static/images/bg_search.png);
+  z-index: 15;
+}
+
+.header-wrap header.main-header > .search-container > .input-container > input {
+  border: 0;
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  color: #999;
+  margin: 7px 0 0 18px;
+  padding-top: 3px;
+  padding-left: 0;
+}
+
+header.main-header > nav.main-header-nav > ul > li {
+  float: left;
+}
+
+header.main-header > nav.main-header-nav > ul > li > a {
+  padding: 8px 10px;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: bold;
+}

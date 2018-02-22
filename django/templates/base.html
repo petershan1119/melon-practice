@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,10 +6,35 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Melon</title>
+    <title>Melon archive</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
 </head>
 <body>
-{% block content %}
-{% endblock %}
+<div class="header-wrap">
+    <header class="main-header">
+        <div class="search-container">
+            <a href="{% url 'index' %}">
+                <img src="{% static 'images/logo.png' %}" alt="">
+            </a>
+            <div class="input-container">
+                <input type="text" class="search-input">
+
+            </div>
+        </div>
+        <nav class="main-header-nav">
+            <ul class="clearfix">
+                <li><a href="{% url 'artist:artist-list' %}">아티스트</a></li>
+                <li><a href="{% url 'album:album-list' %}">앨범</a></li>
+                <li><a href="{% url 'song:song-list' %}">곡</a></li>
+            </ul>
+        </nav>
+
+    </header>
+</div>
+<div class="content-block">
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>
