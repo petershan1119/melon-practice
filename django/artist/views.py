@@ -67,9 +67,12 @@ def artist_add_from_melon(request):
 
         name = artist.name
         url_img_cover = artist.url_img_cover
+        url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
         real_name = artist.personal_information.get('본명', '')
         nationality = artist.personal_information.get('국적', '')
         birth_date_str = artist.personal_information.get('생일', '')
+        if not birth_date_str or len(birth_date_str) <= 9:
+            birth_date_str = '1900.01.01'
         constellation = artist.personal_information.get('별자리', '')
         blood_type = artist.personal_information.get('혈액형', '')
 

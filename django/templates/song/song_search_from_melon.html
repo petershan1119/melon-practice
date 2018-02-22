@@ -13,8 +13,13 @@
         {% for song_info in song_info_list %}
         <li>
             <img src="{{ song_info.url_img_cover }}" alt="">
-            <span>{{ song_info.artist }} | {{ song_info.album }} | {{ song_info.title }} | {{ song_info.genre }}</span>
+            <p>{{ song_info.artist }} | {{ song_info.album }} | {{ song_info.title }} | {{ song_info.genre }} | {{ song_info.artist_id }} | {{ song_info.album_id }}</p>
             <p>{{ song_info.lyrics }}</p>
+            <form action="{% url 'song:song-add-from-melon' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="song_id" value="{{ song_info.song_id }}">
+                <button type="submit">DB에 추가하기</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
