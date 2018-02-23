@@ -44,8 +44,8 @@ class ArtistManager(models.Manager):
             if blood_type.strip() == full:
                 blood_type = short
                 break
-            else:
-                blood_type = Artist.BLOOD_TYPE_OTHER
+        else:
+            blood_type = Artist.BLOOD_TYPE_OTHER
 
         # response = requests.get(url_img_cover)
         # binary_data = response.content
@@ -74,7 +74,12 @@ class ArtistManager(models.Manager):
         # )
         file_name, temp_file = download(url_img_cover, artist_id)
 
+        if artist.img_profile:
+            artist.img_profile.delete()
         artist.img_profile.save(file_name, File(temp_file))
+
+        # if not artist.img_profile:
+        #     artist.img_profile.save(file_name, File(temp_file))
         return artist, artist_created
 
 
