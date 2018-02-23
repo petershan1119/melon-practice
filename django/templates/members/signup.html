@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-
-  <h2>Sign up</h2>
-  <form method="post">
+<div class="signup-container">
+  <div class="signup-header">
+    <img src="{% static 'images/logo_large.png' %}" alt="">
+  </div>
+  <form action="" method="POST" class="clearfix">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
+    <!--{% if errors %}-->
+    <!--<ul>-->
+    <!--{% for error in errors %}-->
+    <!--<li>{{ error }}</li>-->
+    <!--{% endfor %}-->
+    <!--</ul>-->
+    <!--{% endif %}-->
+    {% for field in signup_form %}
+    <div class="form-group clearfix">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% for error in field.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div>
+      <button type="submit" class="btn btn-signup btn-theme">회원 가입</button>
+    </div>
   </form>
-
+</div>
 {% endblock %}

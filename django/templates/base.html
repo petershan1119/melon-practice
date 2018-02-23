@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/artist_list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 </head>
 <body>
 <div class="header-wrap">
@@ -32,11 +33,18 @@
 
             </div>
         </div>
-        <nav class="main-header-nav">
+        <nav class="main-header-nav clearfix">
             <ul class="clearfix">
                 <li><a href="{% url 'artist:artist-list' %}">아티스트</a></li>
                 <li><a href="{% url 'album:album-list' %}">앨범</a></li>
                 <li><a href="{% url 'song:song-list' %}">곡</a></li>
+            </ul>
+        </nav>
+        <nav class="main-header-nav nav-right clearfix">
+            <ul class="clearfix">
+                <li><a href="{% url 'logout' %}">로그아웃</a></li>
+                <li><a href="{% url 'login' %}">로그인</a></li>
+                <li><a href="{% url 'signup' %}">회원가입</a></li>
             </ul>
         </nav>
 

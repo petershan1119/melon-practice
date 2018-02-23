@@ -1,0 +1,46 @@
+.signup-container {
+  width: 550px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.signup-container > .signup-header {
+  padding: 68px 0 42px;
+}
+
+.signup-container > form {
+  border: 1px solid #e1e1e1;
+  padding: 35px 0 42px;
+}
+
+.signup-container > form .form-group {
+  width: 432px;
+  margin: 0 auto 20px;
+  text-align: left;
+}
+
+.signup-container > form .form-group label {
+  display: inline-block;
+  float: left;
+  width: 122px;
+  height: 53px;
+  line-height: 53px;
+  font-size: 17px;
+}
+
+.signup-container > form .form-group input {
+  float: left;
+  height: 53px;
+  line-height: 53px;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  width: 310px;
+  font-size: 17px;
+}
+
+.signup-container > form .btn-signup {
+  cursor: pointer;
+  margin-top: 20px;
+}
