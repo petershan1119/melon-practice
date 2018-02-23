@@ -8,6 +8,7 @@ idna==2.6
 lxml==4.1.1
 Pillow==5.0.0
 psycopg2==2.7.4
+psycopg2-binary==2.7.4
 python-magic==0.4.15
 pytz==2018.3
 requests==2.18.4
