@@ -27,10 +27,10 @@ class AlbumManager(models.Manager):
 
         title = entry.select_one('div.info > .song_name').contents[2].strip()
         url_img_cover = re.search(r'(.*?)/melon/quality.*', src).group(1)
-        if re.findall('http.*?\.jpg', url_img_cover):
-            url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
-        else:
-            url_img_cover = "http://cdnimg.melon.co.kr/resource/image/web/default/noAlbum_500_160727.jpg"
+        # if re.findall('http.*?\.jpg', url_img_cover):
+        #     url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
+        # else:
+        #     url_img_cover = "http://cdnimg.melon.co.kr/resource/image/web/default/noAlbum_500_160727.jpg"
 
         meta_dict = get_dict_from_dl(entry.select_one('div.meta dl'))
 

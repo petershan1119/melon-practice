@@ -27,10 +27,10 @@ class SongManager(models.Manager):
 
         thumb_entry = soup_song.find('div', class_='thumb')
         url_img_cover = thumb_entry.find('img').get('src')
-        if re.findall('http.*?\.jpg', url_img_cover):
-            url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
-        else:
-            url_img_cover = "http://cdnimg.melon.co.kr/resource/image/web/default/noAlbum_500_160727.jpg"
+        # if re.findall('http.*?\.jpg', url_img_cover):
+        #     url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
+        # else:
+        #     url_img_cover = "http://cdnimg.melon.co.kr/resource/image/web/default/noAlbum_500_160727.jpg"
 
         div_entry = soup_song.find('div', class_='entry')
 
