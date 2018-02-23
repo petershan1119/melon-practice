@@ -9,6 +9,7 @@ from django.db import models
 
 from album.models import Album
 from artist.models import Artist
+from utils.file import download
 
 
 class SongManager(models.Manager):
@@ -65,12 +66,17 @@ class SongManager(models.Manager):
         else:
             lyrics = '가사가 없습니다'
 
-        # if Album.objects.get(title=album):
-        response = requests.get(url_img_cover)
-        binary_data = response.content
-        temp_file = BytesIO()
-        temp_file.write(binary_data)
-        temp_file.seek(0)
+        # # if Album.objects.get(title=album):
+        # # url_img_cover는 이미지의 URL
+        # response = requests.get(url_img_cover)
+        # # requests에 GET요청을 보낸 결과의 Binary data
+        # binary_data = response.content
+        # # 파일처럼 취급되는 메모리 객체 temp_file를 생성
+        # temp_file = BytesIO()
+        # # temp_file에 이진데이터를 기록
+        # temp_file.write(binary_data)
+        # # 파일객체의 포인터를 시작부분으로 되돌림
+        # # temp_file.seek(0)
 
         # artist = ArtistData(artist_id)
         # artist.get_detail()
@@ -131,7 +137,8 @@ class SongManager(models.Manager):
         artist, _ = Artist.objects.update_or_create_from_melon(artist_id)
         song.artists.add(artist)
 
-        file_name = Path(url_img_cover).name
+        # file_name = Path(url_img_cover).name
+        file_name, temp_file = download(url_img_cover, song_id)
         song.img_cover.save(file_name, File(temp_file))
         return song, song_created
 

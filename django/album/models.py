@@ -10,6 +10,7 @@ from django.db import models
 
 from artist.models import Artist
 from crawler.utils.parsing import get_dict_from_dl
+from utils.file import download
 
 
 class AlbumManager(models.Manager):
@@ -33,11 +34,11 @@ class AlbumManager(models.Manager):
 
         meta_dict = get_dict_from_dl(entry.select_one('div.meta dl'))
 
-        response = requests.get(url_img_cover)
-        binary_data = response.content
-        temp_file = BytesIO()
-        temp_file.write(binary_data)
-        temp_file.seek(0)
+        # response = requests.get(url_img_cover)
+        # binary_data = response.content
+        # temp_file = BytesIO()
+        # temp_file.write(binary_data)
+        # # temp_file.seek(0)
 
         try:
             release_date = datetime.strptime(meta_dict['발매일'], '%Y.%m.%d')
@@ -57,7 +58,8 @@ class AlbumManager(models.Manager):
                 'release_date': release_date,
             }
         )
-        file_name = Path(url_img_cover).name
+        # file_name = Path(url_img_cover).name
+        file_name, temp_file = download(url_img_cover, album_id)
         album.img_cover.save(file_name, File(temp_file))
         return album, album_created
 

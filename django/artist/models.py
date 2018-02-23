@@ -4,11 +4,13 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 
+import magic
 import requests
 from django.core.files import File
 from django.db import models
 
 from crawler.artist import ArtistData
+from utils.file import download
 
 
 class ArtistManager(models.Manager):
@@ -45,11 +47,11 @@ class ArtistManager(models.Manager):
             else:
                 blood_type = Artist.BLOOD_TYPE_OTHER
 
-        response = requests.get(url_img_cover)
-        binary_data = response.content
-        temp_file = BytesIO()
-        temp_file.write(binary_data)
-        temp_file.seek(0)
+        # response = requests.get(url_img_cover)
+        # binary_data = response.content
+        # temp_file = BytesIO()
+        # temp_file.write(binary_data)
+        # # temp_file.seek(0)
 
         artist, artist_created = Artist.objects.update_or_create(
             melon_id=artist_id,
@@ -63,7 +65,15 @@ class ArtistManager(models.Manager):
             }
         )
 
-        file_name = Path(url_img_cover).name
+        # file_name = Path(url_img_cover).name
+        # temp_file.seek(0)
+        # mine_type = magic.from_buffer(temp_file.read(), mime=True)
+        # file_name = '{artist_id}.{ext}'.format(
+        #     artist_id=artist_id,
+        #     ext=mine_type.split('/')[-1]
+        # )
+        file_name, temp_file = download(url_img_cover, artist_id)
+
         artist.img_profile.save(file_name, File(temp_file))
         return artist, artist_created
 
