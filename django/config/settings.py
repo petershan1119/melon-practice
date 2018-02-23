@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'artist.apps.ArtistConfig',
     'album.apps.AlbumConfig',
     'song.apps.SongConfig',
+    'members.apps.MembersConfig',
 
     'django_extensions',
 
@@ -113,6 +114,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'members.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
