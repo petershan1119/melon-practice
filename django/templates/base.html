@@ -1,58 +1,53 @@
+
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Melon archive</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/artist_list.css' %}">
-    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Melon archive</title>
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/header.css' %}">
+	<link rel="stylesheet" href="{% static 'css/artist-list.css' %}">
+	<link rel="stylesheet" href="{% static 'css/signup.css' %}">
 </head>
 <body>
-<div class="header-wrap">
-    <header class="main-header">
-        {% if request.user.is_authenticated %}
-        <div>{{ request.user }}로 로그인 중입니다</div>
-        <!--<form action="{% url 'logout' %}">-->
-            <!--<button type="submit">로그아웃</button>-->
-        <!--</form>-->
-        <div><a href="{% url 'logout' %}">로그아웃</a></div>
-        {% else %}
-        <div><a href="{% url 'login' %}">로그인하세요</a></div>
-        {% endif %}
-        <div class="search-container">
-            <a href="{% url 'index' %}">
-                <img src="{% static 'images/logo.png' %}" alt="">
-            </a>
-            <div class="input-container">
-                <input type="text" class="search-input">
+	<div class="header-wrap">
+		<header class="main-header clearfix">
+			<div class="search-container">
+				<a href="">
+					<img src="{% static 'images/logo.png' %}" alt="">
+				</a>
+				<div class="input-container">
+					<input type="text" class="search-input">
+				</div>
+			</div>
+			<nav class="main-header-nav clearfix">
+				<ul class="clearfix">
+					<li><a href="{% url 'artist:artist-list' %}">아티스트</a></li>
+					<li><a href="{% url 'album:album-list' %}">앨범</a></li>
+					<li><a href="{% url 'song:song-list' %}">곡</a></li>
+				</ul>
+			</nav>
+			<nav class="main-header-nav nav-right clearfix">
+				<ul class="clearfix">
+					{% if user.is_authenticated %}
+					<li><a href="">내 정보 ({{ request.user.username }})</a></li>
+					<li><a href="{% url 'logout' %}">로그아웃</a></li>
+					{% else %}
+					<li><a href="{% url 'login' %}">로그인</a></li>
+					<li><a href="{% url 'signup' %}">회원가입</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+		</header>
+	</div>
 
-            </div>
-        </div>
-        <nav class="main-header-nav clearfix">
-            <ul class="clearfix">
-                <li><a href="{% url 'artist:artist-list' %}">아티스트</a></li>
-                <li><a href="{% url 'album:album-list' %}">앨범</a></li>
-                <li><a href="{% url 'song:song-list' %}">곡</a></li>
-            </ul>
-        </nav>
-        <nav class="main-header-nav nav-right clearfix">
-            <ul class="clearfix">
-                <li><a href="{% url 'logout' %}">로그아웃</a></li>
-                <li><a href="{% url 'login' %}">로그인</a></li>
-                <li><a href="{% url 'signup' %}">회원가입</a></li>
-            </ul>
-        </nav>
-
-    </header>
-</div>
-<div class="content-block">
-    {% block content %}
-    {% endblock %}
-</div>
+	<div class="content-block">
+		{% block content %}
+		{% endblock %}
+	</div>
 </body>
 </html>

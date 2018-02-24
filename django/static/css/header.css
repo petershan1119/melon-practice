@@ -1,13 +1,13 @@
 .header-wrap {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #999;
 }
 
-.header-wrap header.main-header {
+header.main-header {
   width: 1000px;
   margin: 0 auto;
 }
 
-.header-wrap header.main-header > .search-container > .input-container {
+header.main-header > .search-container > .input-container {
   margin: 36px 0 0 11px;
   vertical-align: top;
   display: inline-block;
@@ -17,7 +17,7 @@
   z-index: 15;
 }
 
-.header-wrap header.main-header > .search-container > .input-container > input {
+header.main-header > .search-container > .input-container > input {
   border: 0;
   font-size: 12px;
   height: 20px;
@@ -28,13 +28,22 @@
   padding-left: 0;
 }
 
+header.main-header > nav.main-header-nav {
+  float: left;
+}
+
+header.main-header > nav.main-header-nav.nav-right {
+  float: right;
+}
+
 header.main-header > nav.main-header-nav > ul > li {
   float: left;
 }
 
 header.main-header > nav.main-header-nav > ul > li > a {
-  padding: 8px 10px;
-  font-size: 1.5rem;
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 1.3rem;
   color: #333;
   font-weight: bold;
 }

@@ -1,7 +1,9 @@
+$color-btn: #00cd3c;
+
 html, body {
   margin: 0;
   padding: 0;
-  font-size: 13px;
+  font-size: 14px;
   background-color: #fff;
   height: 100%;
 }
@@ -31,4 +33,12 @@ a {
   height: 0px;
   clear: both;
   display: block;
+}
+
+.btn {
+  background-color: $color-btn;
+  font-size: 20px;
+  padding: 17px 40px;
+  border: none;
+  color: white;
 }
