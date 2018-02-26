@@ -6,12 +6,12 @@ from pathlib import Path
 
 import magic
 import requests
+from django.conf import settings
 from django.core.files import File
 from django.db import models
 
 from crawler.artist import ArtistData
 from utils.file import download
-
 
 class ArtistManager(models.Manager):
 
@@ -144,9 +144,55 @@ class Artist(models.Model):
         '소개',
         blank=True,
     )
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='ArtistLike',
+        related_name='like_artists',
+        blank=True,
+    )
 
     objects = ArtistManager()
 
     def __str__(self):
         return self.name
 
+    def toggle_like_user(self, user):
+        """
+        이 User의 특정 Artist를 연결하는 중개모델인 ArtistList인스턴스를
+            없을 경우 생성, 있으면 삭제하는 메서드
+        """
+        # query = ArtistLike.objects.filter(artist=self, user=user)
+        # if query.exists():
+        #     query.delete()
+        #     return False
+        # else:
+        #     ArtistLike.objects.create(artist=self, user=user)
+        #     return True
+
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        if not like_created:
+            like.delete()
+        return like_created
+
+
+
+class ArtistLike(models.Model):
+    # Artist와 User(members.User)와의 관계를 나타내는 중계모델
+    artist = models.ForeignKey(Artist, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_artist_info_list', on_delete=models.CASCADE)
+
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+        unique_together = (
+            ('artist', 'user'),
+        )
+
+    def __str__(self):
+        return 'ArtistLike (User: {user}, Artist: {artist}, Created: {create_date})'.format(
+            user=self.user.username,
+            artist=self.artist.name,
+            create_date=datetime.strftime(self.create_date, '%Y.%m.%d'),
+        )

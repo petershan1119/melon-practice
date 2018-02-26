@@ -37,11 +37,6 @@ def artist_add(request):
     }
     return render(request, 'artist/artist_add.html', context)
 
-
-def get_objects_or_404(Artist, pk):
-    pass
-
-
 def artist_edit(request, artist_pk):
     """
     artist_pk에 해당하는 Artist 수정
