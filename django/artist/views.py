@@ -24,7 +24,7 @@ def artist_list(request):
 
 def artist_add(request):
     if request.method == 'POST':
-        form = ArtistForm(request.POST)
+        form = ArtistForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('artist:artist-list')

@@ -2,15 +2,22 @@
 {% block content %}
 
 <div>
-    <h1>Artist add</h1>
+    <h3>적접 아티스트 추가</h3>
 </div>
 
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in artist_form %}
     <div>
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }}
+        {% if field.errors %}
+        <ul>
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
     {% endfor %}
     <button type="submit">등록</button>

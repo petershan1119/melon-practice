@@ -7,6 +7,7 @@ class ArtistForm(ModelForm):
     class Meta:
         model = Artist
         fields = [
+            'img_profile',
             'melon_id',
             'name',
             'real_name',
