@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 
 from .models import Artist
 
@@ -17,3 +18,10 @@ class ArtistForm(ModelForm):
             'blood_type',
             'intro',
         ]
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            )
+        }

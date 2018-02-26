@@ -8,11 +8,12 @@ from datetime import datetime
 
 from django.core.files import File
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ArtistForm
 from crawler.artist import ArtistData
 from .models import Artist
+
 
 def artist_list(request):
     artists = Artist.objects.all()
@@ -35,6 +36,36 @@ def artist_add(request):
         'artist_form': form,
     }
     return render(request, 'artist/artist_add.html', context)
+
+
+def get_objects_or_404(Artist, pk):
+    pass
+
+
+def artist_edit(request, artist_pk):
+    """
+    artist_pk에 해당하는 Artist 수정
+
+    Form: ArtistForm
+    Template: artist/artsit_edit.html
+
+    bound form: ArtistForm(instance=<artist instance>)
+    ModelForm을 사용해 instance 업데이트
+        ArtistForm(request.POST, instance=<artist instance>)
+        form.save()
+    """
+    artist = get_object_or_404(Artist, pk=artist_pk)
+    if request.method == 'POST':
+        form = ArtistForm(request.POST, request.FILES, instance=artist)
+        if form.is_valid():
+            form.save()
+            return redirect('artist:artist-list')
+    else:
+        form = ArtistForm(instance=artist)
+    context = {
+        'artist_form': form,
+    }
+    return render(request, 'artist/artist_edit.html', context)
 
 def artist_search_from_melon(request):
     context = {}
