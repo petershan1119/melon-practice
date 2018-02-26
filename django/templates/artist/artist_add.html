@@ -7,7 +7,12 @@
 
 <form action="" method="POST">
     {% csrf_token %}
-    <input type="text" name="name">
+    {% for field in artist_form %}
+    <div>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
     <button type="submit">등록</button>
 </form>
 

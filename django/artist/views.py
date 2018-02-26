@@ -10,6 +10,7 @@ from django.core.files import File
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from .forms import ArtistForm
 from crawler.artist import ArtistData
 from .models import Artist
 
@@ -23,13 +24,17 @@ def artist_list(request):
 
 def artist_add(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        Artist.objects.create(
-            name=name,
-        )
-        return redirect('artist:artist-list')
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('artist:artist-list')
     else:
-        return render(request, 'artist/artist_add.html')
+        form = ArtistForm()
+
+    context = {
+        'artist_form': form,
+    }
+    return render(request, 'artist/artist_add.html', context)
 
 def artist_search_from_melon(request):
     context = {}
