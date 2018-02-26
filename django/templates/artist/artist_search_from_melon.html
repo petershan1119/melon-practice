@@ -18,7 +18,11 @@
             <form action="{% url 'artist:artist-add-from-melon' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="artist_id" value="{{ artist_info.artist_id }}">
-                <button type="submit">DB에 추가하기</button>
+                {% if artist_info.is_exist %}
+                    <button type="submit">DB에 업데이트</button>
+                {% else %}
+                    <button type="submit">DB에 추가하기</button>
+                {% endif %}
             </form>
         </li>
         {% endfor %}

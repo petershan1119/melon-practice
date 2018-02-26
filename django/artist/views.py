@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 from django.core.files import File
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from crawler.artist import ArtistData
@@ -55,6 +56,7 @@ def artist_search_from_melon(request):
                     'name': name,
                     'url_img_cover': url_img_cover,
                     'artist_id': artist_id,
+                    'is_exist': Artist.objects.filter(melon_id=artist_id).exists(),
                 })
             context['artist_info_list'] = artist_info_list
     return render(request, 'artist/artist_search_from_melon.html', context)

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 
 from members.forms import SignupForm
 
@@ -71,7 +72,10 @@ def signup_view(request):
 
     else:
         form = SignupForm()
+
+    parent_template = get_template('base.html')
     context = {
+        'parent': parent_template,
         'signup_form': form,
     }
 

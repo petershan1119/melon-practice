@@ -2,6 +2,9 @@
 {% block content %}
 
 <div class="artist-list-container">
+    <!-- artist_add로의 링크 설정 -->
+    <a href="{% url 'artist:artist-add' %}">아티스트 추가</a>
+
     <ul class="clearfix">
         {% for artist in artists %}
         <li class="clearfix">
