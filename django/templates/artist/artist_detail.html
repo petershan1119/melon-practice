@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<li class="clearfix">
+    <img src="{% if artist.img_profile %}{{ artist.img_profile.url }}{% endif %}" alt="" class="cover">
+    <div class="artist-info">
+        <div class="name"><a href="{% url 'artist:artist-detail' artist_pk=artist.pk %}">{{ artist.name }}</a></div>
+        <div>{{ artist.nationality }}</div>
+        <div>{{ artist.birth_date }}</div>
+        <div>{{ artist.constellation }}</div>
+        <div>{{ artist.blood_type }}</div>
+        <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">수정</button>
+        </form>
+
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
+            {% if request.user in artist.like_users.all %}
+            <button type="submit">좋아요 취소</button>
+            {% else %}
+            <button type="submit">좋아요</button>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
+</li>
+{% endblock %}

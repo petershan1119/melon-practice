@@ -50,7 +50,8 @@ def artist_like_toggle(request, artist_pk):
     artist = Artist.objects.get(pk=artist_pk)
     if request.method == "POST":
         artist.toggle_like_user(user=request.user)
-        return redirect('artist:artist-list')
+        next_path = request.POST.get('next-path', 'artist:artist-list')
+        return redirect(next_path)
 
 
 def artist_edit(request, artist_pk):
@@ -78,6 +79,13 @@ def artist_edit(request, artist_pk):
     }
     return render(request, 'artist/artist_edit.html', context)
 
+
+def artist_detail(request, artist_pk):
+    artist =get_object_or_404(Artist, pk=artist_pk)
+    context = {
+        'artist': artist,
+    }
+    return render(request, 'artist/artist_detail.html', context)
 
 def artist_search_from_melon(request):
     context = {}
