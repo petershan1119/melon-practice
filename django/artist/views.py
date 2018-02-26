@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ArtistForm
 from crawler.artist import ArtistData
-from .models import Artist
+from .models import Artist, ArtistLike
 
 
 def artist_list(request):
@@ -36,6 +36,22 @@ def artist_add(request):
         'artist_form': form,
     }
     return render(request, 'artist/artist_add.html', context)
+
+
+def artist_like_toggle(request, artist_pk):
+    """
+    request.user와
+    artist_pk를 사용해서
+
+    ArtistLike객체를 토글하는 뷰
+
+    완료 후에는 artist:artist-list로 이동
+    """
+    artist = Artist.objects.get(pk=artist_pk)
+    if request.method == "POST":
+        artist.toggle_like_user(user=request.user)
+        return redirect('artist:artist-list')
+
 
 def artist_edit(request, artist_pk):
     """
@@ -61,6 +77,7 @@ def artist_edit(request, artist_pk):
         'artist_form': form,
     }
     return render(request, 'artist/artist_edit.html', context)
+
 
 def artist_search_from_melon(request):
     context = {}
@@ -91,6 +108,7 @@ def artist_search_from_melon(request):
                 })
             context['artist_info_list'] = artist_info_list
     return render(request, 'artist/artist_search_from_melon.html', context)
+
 
 def artist_add_from_melon(request):
     """

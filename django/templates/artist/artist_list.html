@@ -16,11 +16,22 @@
                     <div>{{ artist.birth_date }}</div>
                     <div>{{ artist.constellation }}</div>
                     <div>{{ artist.blood_type }}</div>
-                    <form action="{% url 'artist:artist-edit' artist.pk %}">
+                    <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
+                        {% csrf_token %}
                         <button type="submit">수정</button>
                     </form>
 
                 </div>
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
+                    {% csrf_token %}
+                    {% if request.user in artist.like_users.all %}
+                    <button type="submit">좋아요 취소</button>
+                    {% else %}
+                    <button type="submit">좋아요</button>
+                    {% endif %}
+                </form>
+                {% endif %}
             </a>
         </li>
         {% endfor %}
