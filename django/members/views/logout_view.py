@@ -1,6 +1,6 @@
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import logout
 
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 
 
 __all__ = (
