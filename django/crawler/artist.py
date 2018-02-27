@@ -1,8 +1,7 @@
-
-import requests
 from bs4 import BeautifulSoup, NavigableString
-
 from .utils.parsing import get_dict_from_dl
+import requests
+
 
 DOMAIN = 'https://www.melon.com'
 

@@ -8,6 +8,11 @@ from song.models import SongLike
 
 class User(AbstractUser):
 
+    img_profile = models.ImageField(
+        upload_to='user',
+        blank=True,
+    )
+
     def toggle_like_artist(self, artist):
         """
         이 User의 특정 Artist를 연결하는 중개모델인 ArtistList인스턴스를

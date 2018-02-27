@@ -68,7 +68,7 @@ class ArtistManager(models.Manager):
                 'nationality': nationality,
                 'birth_date': birth_date,
                 'constellation': constellation,
-                # 'blood_type': blood_type,
+                'blood_type': blood_type,
             }
         )
 

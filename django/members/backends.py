@@ -1,6 +1,9 @@
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.files import File
+
+from utils.file import download
 
 User = get_user_model()
 
@@ -69,12 +72,21 @@ class FacebookBackend:
 
             try:
                 user = User.objects.get(username=facebook_id)
+                file_name, temp_file = download(url_picture, facebook_id)
+                if user.img_profile:
+                    user.img_profile.delete()
+                user.img_profile.save(file_name, File(temp_file))
+
             except User.DoesNotExist:
                 user = User.objects.create_user(
                     username=facebook_id,
                     first_name=first_name,
                     last_name=last_name,
                 )
+                file_name, temp_file = download(url_picture, facebook_id)
+                if user.img_profile:
+                    user.img_profile.delete()
+                user.img_profile.save(file_name, File(temp_file))
             return user
         except Exception:
             return None

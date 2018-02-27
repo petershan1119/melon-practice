@@ -47,6 +47,8 @@ AUTHENTICATION_BACKENDS = [
     'members.backends.FacebookBackend',
 ]
 
+YOUTUBE_API_KEY = 'AIzaSyATxd-k7LRSGKdzYBjSrF0zzCpSxUpND7E'
+
 
 # Application definition
 
