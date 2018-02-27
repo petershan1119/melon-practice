@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <h3>앨범 수정</h3>
+</div>
+
+<form action=""  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in album_form %}
+    <div>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+        <ul>
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit">수정</button>
+</form>
+
+{% endblock %}

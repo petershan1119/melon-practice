@@ -1,16 +1,24 @@
 {% extends 'base.html' %}
+
 {% block content %}
-
 <div>
-    <h1><a href="{% url 'song:song-search' %}">노래 검색</a></h1>
-    <form action="">
-        <input type="text" name="keyword">
-        <button type="submit">검색</button>
-    </form>
+	<h1><a href="{% url 'song:song-search' %}">노래 검색</a></h1>
+	<!--
+		1. song/urls.py에 app_name지정
+		2. 각 path에 name지정
+		3. <app_name>:<url_name> 형식을 사용
+	-->
+	<form action="" method="get">
+		<input id="input-keyword" type="text" name="keyword" value="{{ request.GET.keyword }}">
+		<button type="submit">검색</button>
+	</form>
+	<!--
+		for문을 순회하면서 include태그를 순회문 안에서 1번만 사용해서 3개를 출력할 수 있도록
+		views.py의 내용을 수정
+	-->
+	{% for song_info in song_infos %}
+		{% include 'include/song_search_result.html' with type=song_info.type songs=song_info.songs only %}
+	{% endfor %}
 
-    {% for song_info in song_infos %}
-        {% include 'include/song_search_result.html' with type=song_info.type songs=song_info.songs only %}
-    {% endfor %}
 </div>
-
 {% endblock %}

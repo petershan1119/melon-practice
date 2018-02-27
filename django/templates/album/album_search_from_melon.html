@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <h3>멜론에서 앨범 검색</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="keyword" placeholder="앨범명">
+        <button type="submit">검색</button>
+    </form>
+
+    <ul>
+        {% for album_info in album_info_list %}
+        <li>
+            <img src="{{ album_info.img_cover }}" alt="">
+            <span>{{ album_info.melon_id }} | {{ album_info.title }} | {{ album_info.release_date }}</span>
+            <form action="{% url 'album:album-add-from-melon' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="melon_id" value="{{ album_info.melon_id }}">
+                {% if album_info.is_exist %}
+                <button type="submit">DB에 업데이트</button>
+                {% else %}
+                <button type="submit">DB에 추가하기</button>
+                {% endif %}
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -5,6 +5,8 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+
+from django.conf import settings
 from django.core.files import File
 from django.db import models
 
@@ -26,7 +28,7 @@ class AlbumManager(models.Manager):
         src = info.select_one('div.thumb img').get('src')
 
         title = entry.select_one('div.info > .song_name').contents[2].strip()
-        url_img_cover = re.search(r'(.*?)/melon/quality.*', src).group(1)
+        img_cover = re.search(r'(.*?)/melon/quality.*', src).group(1)
         # if re.findall('http.*?\.jpg', url_img_cover):
         #     url_img_cover = re.findall('http.*?\.jpg', url_img_cover)[0]
         # else:
@@ -59,7 +61,7 @@ class AlbumManager(models.Manager):
             }
         )
         # file_name = Path(url_img_cover).name
-        file_name, temp_file = download(url_img_cover, album_id)
+        file_name, temp_file = download(img_cover, album_id)
         album.img_cover.save(file_name, File(temp_file))
         return album, album_created
 
@@ -78,6 +80,12 @@ class Album(models.Model):
     img_cover = models.ImageField(
         '커버 이미지',
         upload_to='album',
+        blank=True,
+    )
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='AlbumLike',
+        related_name='like_albums',
         blank=True,
     )
     # artists = models.ManyToManyField(
@@ -99,3 +107,29 @@ class Album(models.Model):
     #     )
     def __str__(self):
         return self.title
+
+    def toggle_like_user(self, user):
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        if not like_created:
+            like.delete()
+        return like_created
+
+
+class AlbumLike(models.Model):
+    album = models.ForeignKey(Album, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_album_info_list', on_delete=models.CASCADE)
+
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+    class Meta:
+        unique_together = (
+            ('album', 'user'),
+        )
+
+    def __str__(self):
+        return 'AlbumLike (User: {user}, Album: {album}, Created: {create_date})'.format(
+            user=self.user.username,
+            album=self.album.title,
+            create_date=datetime.strptime(self.create_date, '%Y.%m.%d'),
+        )

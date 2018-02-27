@@ -2,13 +2,13 @@
 {% block content %}
 
 <div>
-    <h3>아티스트 수정</h3>
+    <h3>노래 수정</h3>
 </div>
 
 <div>
 	<form action="" method="POST">
 		{% csrf_token %}
-		{% for field in artist_form %}
+		{% for field in song_form %}
 			<div>
 				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
 				{{ field }}

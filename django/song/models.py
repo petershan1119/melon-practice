@@ -2,8 +2,10 @@ import re
 from io import BytesIO
 from pathlib import Path
 
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup, NavigableString
+from django.conf import settings
 from django.core.files import File
 from django.db import models
 
@@ -180,8 +182,20 @@ class Song(models.Model):
         '가사',
         blank=True,
     )
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='SongLike',
+        related_name='like_songs',
+        blank=True,
+    )
 
     objects = SongManager()
+
+    def toggle_like_user(self, user):
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        if not like_created:
+            like.delete()
+        return like_created
 
     # @property
     # def artists(self):
@@ -204,3 +218,23 @@ class Song(models.Model):
 
     def __str__(self):
         return self.title
+
+class SongLike(models.Model):
+    song = models.ForeignKey(Song, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_song_info_list', on_delete=models.CASCADE)
+
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+        unique_together = (
+            ('song', 'user'),
+        )
+
+    def __str__(self):
+        return 'SongLike (User: {user}, Song: {song}, Created: {create_date})'.format(
+            user=self.user.username,
+            song=self.song.name,
+            create_date=datetime.strftime(self.create_date, '%Y.%m.%d'),
+        )

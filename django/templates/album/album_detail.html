@@ -2,23 +2,20 @@
 {% block content %}
 
 <div class="artist-list-container">
-    <a href="{% url 'album:album-add' %}">앨범 추가</a>
     <ul class="clearfix">
-        {% for album in albums %}
         <li class="clearfix">
             <img src="{% if album.img_cover %}{{ album.img_cover.url }}{% endif %}" alt="" class="cover">
             <div class="artist-info">
-                <div class="name"><a href="{% url 'album:album-detail' album_pk=album.pk %}">{{ album.title }}</a></div>
+                <div class="name">{{ album.title }}</div>
                 <div>{{ album.melon_id }}</div>
                 <div>{{ album.release_date }}</div>
-
                 <form action="{% url 'album:album-edit' album.pk %}">
                     <button type="submit">수정</button>
                 </form>
-
-                {% if request.user.is_authenticated %}
+                   {% if request.user.is_authenticated %}
                 <form action="{% url 'album:album-like-toggle' album_pk=album.pk %}" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
                     {% if request.user in album.like_users.all %}
                     <button type="submit">좋아요 취소</button>
                     {% else %}
@@ -28,8 +25,6 @@
                 {% endif %}
             </div>
         </li>
-        {% endfor %}
     </ul>
 </div>
-
 {% endblock %}

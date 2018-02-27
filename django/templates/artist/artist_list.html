@@ -15,8 +15,8 @@
                 <div>{{ artist.birth_date }}</div>
                 <div>{{ artist.constellation }}</div>
                 <div>{{ artist.blood_type }}</div>
-                <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
-                    {% csrf_token %}
+
+                <form action="{% url 'artist:artist-edit' artist.pk %}">
                     <button type="submit">수정</button>
                 </form>
 

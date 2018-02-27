@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<div class="artist-list-container">
+    <ul class="clearfix">
 <li class="clearfix">
     <img src="{% if artist.img_profile %}{{ artist.img_profile.url }}{% endif %}" alt="" class="cover">
     <div class="artist-info">
-        <div class="name"><a href="{% url 'artist:artist-detail' artist_pk=artist.pk %}">{{ artist.name }}</a></div>
+        <div class="name">{{ artist.name }}</div>
         <div>{{ artist.nationality }}</div>
         <div>{{ artist.birth_date }}</div>
         <div>{{ artist.constellation }}</div>
@@ -26,4 +29,6 @@
         {% endif %}
     </div>
 </li>
+    </ul>
+    </div>
 {% endblock %}

@@ -5,7 +5,6 @@
     <a href="{% url 'song:song-add' %}">노래 추가</a>
 
     <ul class="clearfix">
-        {% for song in songs %}
         <li class="clearfix">
             <img src="{% if song.img_cover %}{{ song.img_cover.url }}{% endif %}" alt="" class="cover">
             <div class="artist-info">
@@ -21,6 +20,7 @@
                 {% if request.user.is_authenticated %}
                 <form action="{% url 'song:song-like-toggle' song_pk=song.pk %}" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
                     {% if request.user in song.like_users.all %}
                     <button type="submit">좋아요 취소</button>
                     {% else %}
@@ -30,8 +30,6 @@
                 {% endif %}
             </div>
         </li>
-        {% endfor %}
     </ul>
 </div>
-
 {% endblock %}

@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
+
 {% block content %}
-
 <div>
-    <h3>멜론에서 노래 검색</h3>
-    <form action="">
-        <input type="text" name="keyword" placeholder="노래명">
-        <button type="submit">검색</button>
+	<h3>멜론에서 노래 검색</h3>
+	<form action="">
+		<input type="text" name="keyword">
+		<button type="submit">검색</button>
+	</form>
 
-    </form>
-
-    <ul>
-        {% for song_info in song_info_list %}
-        <li>
-            <img src="{{ song_info.url_img_cover }}" alt="">
-            <p>{{ song_info.artist }} | {{ song_info.album }} | {{ song_info.title }} | {{ song_info.genre }} | {{ song_info.artist_id }} | {{ song_info.album_id }}</p>
-            <p>{{ song_info.lyrics }}</p>
-            <form action="{% url 'song:song-add-from-melon' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="song_id" value="{{ song_info.song_id }}">
-                <button type="submit">DB에 추가하기</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-
+	<ul>
+		{% for song_info in song_info_list %}
+		<li>
+			<div>
+				<span>{{ song_info.song_id }} | {{ song_info.title }}</span>
+			</div>
+			<div>{{ song_info.artist }}</div>
+			<form action="{% url 'song:song-add-from-melon' %}" method="POST">
+				{% csrf_token %}
+				<input type="hidden" name="song_id" value="{{ song_info.song_id }}">
+				<button type="submit">DB에 추가하기</button>
+			</form>
+		</li>
+		{% endfor %}
+	</ul>
 </div>
 {% endblock %}
