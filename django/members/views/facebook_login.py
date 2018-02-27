@@ -1,6 +1,6 @@
 import requests
 from django.conf import settings
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, authenticate
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
@@ -10,8 +10,14 @@ __all__ = (
 
 User = get_user_model()
 
-
 def facebook_login(request):
+    code = request.GET.get('code')
+    user = authenticate(request, code=code)
+    login(request, user)
+    return redirect('index')
+
+
+def facebook_login_backup(request):
     client_id = settings.FACEBOOK_APP_ID
     client_secret = settings.FACEBOOK_SECRET_CODE
     code = request.GET['code']
