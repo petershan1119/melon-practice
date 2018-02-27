@@ -6,14 +6,14 @@
     <a href="{% url 'song:song-add' %}">노래 추가</a>
 
     <ul class="clearfix">
-        <li class="clearfix">
+        <li class="artist-detail-clearfix">
             <img src="{% if song.img_cover %}{{ song.img_cover.url }}{% endif %}" alt="" class="cover">
             <div class="artist-info">
                 <div class="name"><a href="{% url 'song:song-detail' song_pk=song.pk %}">{{ song.title }}</a></div>
                 <div>{{ song.album.title }}</div>
                 <div>{{ song.song_id }}</div>
                 <div>{{ song.genre }}</div>
-                <div>{{ song.lyrics| ellipsis_line:3|linebreaksbr }}</div>
+                <div>{{ song.lyrics| ellipsis_line:15|linebreaksbr }}</div>
 
                 <form action="{% url 'song:song-edit' song.pk %}">
                     <button type="submit">수정</button>

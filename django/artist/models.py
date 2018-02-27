@@ -1,17 +1,19 @@
-import re
-
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 
-import magic
-import requests
 from django.conf import settings
 from django.core.files import File
 from django.db import models
 
 from crawler.artist import ArtistData
 from utils.file import download
+from youtube.models import Youtube
+
+import magic
+import re
+import requests
+
 
 class ArtistManager(models.Manager):
 
@@ -155,6 +157,10 @@ class Artist(models.Model):
         settings.AUTH_USER_MODEL,
         through='ArtistLike',
         related_name='like_artists',
+        blank=True,
+    )
+    youtube_links = models.ManyToManyField(
+        Youtube,
         blank=True,
     )
 

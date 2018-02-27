@@ -48,21 +48,6 @@ def facebook_login_backup(request):
         ])
     }
 
-    # "{
-    #   'id': '1639895212763666',
-    #   'name': 'Sang Won Han',
-    #   'picture': {
-    #       'data': {
-    #           'height': 640,
-    #           'is_silhouette': False,
-    #           'url': 'https://scontent.xx.fbcdn.net/v/t1.0-1/387122_185074364912432_1806965393_n.jpg?oh=9b04429ffe4cba685ee13d8551bc6a13&oe=5AFFA211',
-    #       '   width': 480
-    #       }
-    #   },
-    #   'first_name': 'Sang Won',
-    #   'last_name': 'Han'
-    # }
-
     response = requests.get(url, params)
     response_dict = response.json()
     facebook_id = response_dict['id']
@@ -81,3 +66,18 @@ def facebook_login_backup(request):
         )
     login(request, user)
     return redirect('index')
+
+    # "{
+    #   'id': '1639895212763666',
+    #   'name': 'Sang Won Han',
+    #   'picture': {
+    #       'data': {
+    #           'height': 640,
+    #           'is_silhouette': False,
+    #           'url': 'https://scontent.xx.fbcdn.net/v/t1.0-1/387122_185074364912432_1806965393_n.jpg?oh=9b04429ffe4cba685ee13d8551bc6a13&oe=5AFFA211',
+    #       '   width': 480
+    #       }
+    #   },
+    #   'first_name': 'Sang Won',
+    #   'last_name': 'Han'
+    # }

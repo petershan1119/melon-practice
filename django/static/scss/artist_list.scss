@@ -1,6 +1,6 @@
 .artist-list-container {
-  ul {
-    li {
+  > ul {
+    > li {
       float: left;
       width: 50%;
       box-sizing: border-box;
@@ -26,6 +26,47 @@
           font-weight: bold;
           font-size: 1.1rem;
           margin-bottom: 4px;
+        }
+      }
+    }
+
+    > li.artist-detail-clearfix {
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      border-bottom: 1px solid #ddd;
+      padding: 15px;
+      height: 450px;
+
+      a {
+        display: inline-block;
+        color: #333;
+      }
+      img.cover {
+        float: left;
+        width: 120px;
+        height: 120px;
+        border: 1px solid #ddd;
+      }
+      .artist-info {
+        float: left;
+        padding: 5px 0 0 15px;
+        max-width: 1000px;
+
+        .name {
+          font-weight: bold;
+          font-size: 1.1rem;
+          margin-bottom: 4px;
+        }
+        ul.youtube-list {
+          list-style-type: circle;
+          list-style-position: inside;
+          padding: 10px;
+        }
+        .youtube-name {
+          font-weight: bold;
+          font-size: 1.1rem;
+          margin-top: 8px;
         }
       }
     }

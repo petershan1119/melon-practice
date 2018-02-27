@@ -3,32 +3,36 @@
 
 <div class="artist-list-container">
     <ul class="clearfix">
-<li class="clearfix">
-    <img src="{% if artist.img_profile %}{{ artist.img_profile.url }}{% endif %}" alt="" class="cover">
-    <div class="artist-info">
-        <div class="name">{{ artist.name }}</div>
-        <div>{{ artist.nationality }}</div>
-        <div>{{ artist.birth_date }}</div>
-        <div>{{ artist.constellation }}</div>
-        <div>{{ artist.blood_type }}</div>
-        <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">수정</button>
-        </form>
+        <li class="artist-detail-clearfix">
+            <img src="{% if artist.img_profile %}{{ artist.img_profile.url }}{% endif %}" alt="" class="cover">
+            <div class="artist-info">
+                <div class="name">{{ artist.name }}</div>
+                <div>{{ artist.nationality }}</div>
+                <div>{{ artist.birth_date }}</div>
+                <div>{{ artist.constellation }}</div>
+                <div>{{ artist.blood_type }}</div>
+                <div class="youtube-name">Youtube 관련 동영상</div>
+                <ul class="youtube-list"> {% for youtube in youtube_list %}
+                    <li><a href="{{ youtube.video_id }}" target="_blank">{{ youtube.title }}</a></li>
+                    {% endfor %}</ul>
+            <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">수정</button>
+            </form>
 
-        {% if request.user.is_authenticated %}
-        <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
-            {% if request.user in artist.like_users.all %}
-            <button type="submit">좋아요 취소</button>
-            {% else %}
-            <button type="submit">좋아요</button>
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
+                {% if request.user in artist.like_users.all %}
+                <button type="submit">좋아요 취소</button>
+                {% else %}
+                <button type="submit">좋아요</button>
+                {% endif %}
+            </form>
             {% endif %}
-        </form>
-        {% endif %}
-    </div>
-</li>
+        </div>
+        </li>
     </ul>
-    </div>
+</div>
 {% endblock %}

@@ -1,4 +1,4 @@
-.artist-list-container ul li {
+.artist-list-container > ul > li {
   float: left;
   width: 50%;
   box-sizing: border-box;
@@ -7,25 +7,70 @@
   height: 150px;
 }
 
-.artist-list-container ul li a {
+.artist-list-container > ul > li a {
   display: inline-block;
   color: #333;
 }
 
-.artist-list-container ul li img.cover {
+.artist-list-container > ul > li img.cover {
   float: left;
   width: 120px;
   height: 120px;
   border: 1px solid #ddd;
 }
 
-.artist-list-container ul li .artist-info {
+.artist-list-container > ul > li .artist-info {
   float: left;
-  padding: 0 0 0 15px;
+  padding: 5px 0 0 15px;
 }
 
-.artist-list-container ul li .artist-info .name {
+.artist-list-container > ul > li .artist-info .name {
   font-weight: bold;
   font-size: 1.1rem;
   margin-bottom: 4px;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  height: 450px;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix a {
+  display: inline-block;
+  color: #333;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix img.cover {
+  float: left;
+  width: 120px;
+  height: 120px;
+  border: 1px solid #ddd;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix .artist-info {
+  float: left;
+  padding: 5px 0 0 15px;
+  max-width: 1000px;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix .artist-info .name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix .artist-info ul.youtube-list {
+  list-style-type: circle;
+  list-style-position: inside;
+  padding: 10px;
+}
+
+.artist-list-container > ul > li.artist-detail-clearfix .artist-info .youtube-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 8px;
 }

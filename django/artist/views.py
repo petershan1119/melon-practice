@@ -6,10 +6,12 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+from django.conf import settings
 from django.core.files import File
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from youtube.models import Youtube
 from .forms import ArtistForm
 from crawler.artist import ArtistData
 from .models import Artist, ArtistLike
@@ -80,13 +82,6 @@ def artist_edit(request, artist_pk):
     return render(request, 'artist/artist_edit.html', context)
 
 
-def artist_detail(request, artist_pk):
-    artist =get_object_or_404(Artist, pk=artist_pk)
-    context = {
-        'artist': artist,
-    }
-    return render(request, 'artist/artist_detail.html', context)
-
 def artist_search_from_melon(request):
     context = {}
     if request.method == "POST":
@@ -136,3 +131,61 @@ def artist_add_from_melon(request):
         artist_id = request.POST['artist_id']
         Artist.objects.update_or_create_from_melon(artist_id)
         return redirect('artist:artist-list')
+
+
+def artist_detail(request, artist_pk):
+    artist = get_object_or_404(Artist, pk=artist_pk)
+
+    url = 'https://www.googleapis.com/youtube/v3/search'
+    params = {
+        'key': settings.YOUTUBE_API_KEY,
+        'part': 'snippet',
+        'q': artist.name,
+        'maxResults': 20,
+    }
+
+    response = requests.get(url, params)
+    response_dict = response.json()
+
+    videos = []
+    channels = []
+    playlists = []
+
+    for search_result in response_dict['items']:
+        if search_result['id']['kind'] == 'youtube#video':
+            videos.append({
+                'title': search_result["snippet"]["title"],
+                'video_id': search_result["id"]["videoId"],
+            })
+        elif search_result['id']['kind'] == 'youtube#channel':
+            channels.append({
+                'title': search_result["snippet"]["title"],
+                'channel_id': search_result["id"]["channelId"],
+            })
+        elif search_result["id"]["kind"] == "youtube#playlist":
+            playlists.append({
+                'title': search_result["snippet"]["title"],
+                'playlist_id': search_result["id"]["playlistId"],
+            })
+
+    for video in videos[:10]:
+        if not Youtube.objects.filter(video_id=video['video_id']):
+            y_object = Youtube.objects.create(video_id=video['video_id'], title=video['title'])
+            artist.youtube_links.add(y_object)
+
+    youtube_list = []
+    url_youtube = 'https://www.youtube.com/watch?v='
+
+    for item in artist.youtube_links.all():
+        title = item.title
+        video_id = item.video_id
+        youtube_list.append({
+            'title': title,
+            'video_id': url_youtube + video_id,
+        })
+
+    context = {
+        'artist': artist,
+        'youtube_list': youtube_list,
+    }
+    return render(request, 'artist/artist_detail.html', context)

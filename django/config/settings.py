@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'album.apps.AlbumConfig',
     'song.apps.SongConfig',
     'members.apps.MembersConfig',
+    'youtube.apps.YoutubeConfig',
 
     'django_extensions',
 
