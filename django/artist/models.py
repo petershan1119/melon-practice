@@ -38,13 +38,20 @@ class ArtistManager(models.Manager):
                     birth_date = None
 
         constellation = artist.personal_information.get('별자리', '')
-        blood_type = artist.personal_information.get('혈액형', '')
 
+
+        blood_type = artist.personal_information.get('혈액형', '')
+        # blood_type과 birth_date_str이 없을때 처리할것
+
+        # 튜플의 리스트를 순회하며 blood_type을 결정
         for short, full in Artist.CHOICES_BLOOD_TYPE:
             if blood_type.strip() == full:
                 blood_type = short
                 break
         else:
+            # break가 발생하지 않은 경우
+            # (미리 정의해놓은 혈액형 타입에 없을 경우)
+            # 기타 혈액형값으로 설정
             blood_type = Artist.BLOOD_TYPE_OTHER
 
         # response = requests.get(url_img_cover)
@@ -61,7 +68,7 @@ class ArtistManager(models.Manager):
                 'nationality': nationality,
                 'birth_date': birth_date,
                 'constellation': constellation,
-                'blood_type': blood_type,
+                # 'blood_type': blood_type,
             }
         )
 
@@ -88,7 +95,7 @@ class Artist(models.Model):
     BLOOD_TYPE_B = 'b'
     BLOOD_TYPE_O = 'o'
     BLOOD_TYPE_AB = 'c'
-    BLOOD_TYPE_OTHER = ' x'
+    BLOOD_TYPE_OTHER = 'x'
     CHOICES_BLOOD_TYPE = (
         (BLOOD_TYPE_A, 'A형'),
         (BLOOD_TYPE_B, 'B형'),

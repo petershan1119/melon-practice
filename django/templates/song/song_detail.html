@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load song_extras %}
 
 <div class="artist-list-container">
     <a href="{% url 'song:song-add' %}">노래 추가</a>
@@ -12,6 +13,7 @@
                 <div>{{ song.album.title }}</div>
                 <div>{{ song.song_id }}</div>
                 <div>{{ song.genre }}</div>
+                <div>{{ song.lyrics| ellipsis_line:3|linebreaksbr }}</div>
 
                 <form action="{% url 'song:song-edit' song.pk %}">
                     <button type="submit">수정</button>

@@ -2,7 +2,7 @@ import re
 from io import BytesIO
 from pathlib import Path
 
-from datetime import datetime
+import datetime
 import requests
 from bs4 import BeautifulSoup, NavigableString
 from django.conf import settings
@@ -39,8 +39,12 @@ class SongManager(models.Manager):
         title = div_entry.find('div', class_='song_name').strong.next_sibling.strip()
 
         artist = div_entry.find('div', class_='artist').get_text(strip=True)
-        artist_id_a = div_entry.select_one('div.artist a').get('href')
-        artist_id = re.findall(r'\(\'(.*?)\'\)', artist_id_a)[0]
+        if div_entry.select_one('div.artist a'):
+            artist_id_a = div_entry.select_one('div.artist a').get('href')
+            artist_id = re.findall(r'\(\'(.*?)\'\)', artist_id_a)[0]
+        else:
+            artist_id = '100014'
+
         # 앨범, 발매일, 장르...에 대한 Description list
         dl = div_entry.find('div', class_='meta').find('dl')
         # isinstance(인스턴스, 클래스(타입))

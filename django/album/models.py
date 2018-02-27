@@ -131,5 +131,5 @@ class AlbumLike(models.Model):
         return 'AlbumLike (User: {user}, Album: {album}, Created: {create_date})'.format(
             user=self.user.username,
             album=self.album.title,
-            create_date=datetime.strptime(self.create_date, '%Y.%m.%d'),
+            create_date=datetime.strftime(self.create_date, '%Y.%m.%d'),
         )

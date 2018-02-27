@@ -38,6 +38,7 @@ def album_search_from_melon(request):
             url = 'https://www.melon.com/search/album/index.htm'
             params = {
                 'q': keyword,
+                'section': 'album',
             }
             response = requests.get(url, params)
             soup = BeautifulSoup(response.text, 'lxml')
