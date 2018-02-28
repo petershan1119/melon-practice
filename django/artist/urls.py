@@ -12,4 +12,5 @@ urlpatterns = [
     path('search/melon/', views.artist_search_from_melon, name='artist-search-from-melon'),
     path('search/melon/add/', views.artist_add_from_melon, name='artist-add-from-melon'),
     path('<int:artist_pk>/', views.artist_detail, name='artist-detail'),
+    path('<int:artist_pk>/add-youtube/', views.artist_add_youtube, name='artist-add-youtube'),
 ]

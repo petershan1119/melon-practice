@@ -59,17 +59,10 @@ class ArtistManager(models.Manager):
         # temp_file.write(binary_data)
         # # temp_file.seek(0)
 
-        artist, artist_created = Artist.objects.update_or_create(
-            melon_id=artist_id,
-            defaults={
-                'name': name,
-                'real_name': real_name,
-                'nationality': nationality,
-                'birth_date': birth_date,
-                'constellation': constellation,
-                'blood_type': blood_type,
-            }
-        )
+        if request.method == 'POST':
+            artist_id = request.POST['artist_id']
+            Artist.objects.update_or_create_from_melon(artist_id)
+            return redirect('artist:artist-list')
 
         # file_name = Path(url_img_cover).name
         # temp_file.seek(0)

@@ -1,20 +1,15 @@
 import re
-from io import BytesIO
-from pathlib import Path
-
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
-
 from django.conf import settings
-from django.core.files import File
-from django.http import HttpResponse
+
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from youtube.models import Youtube
 from .forms import ArtistForm
 from crawler.artist import ArtistData
-from .models import Artist, ArtistLike
+from .models import Artist, ArtistLike, ArtistYouTube
 
 
 def artist_list(request):
@@ -202,3 +197,23 @@ def artist_detail(request, artist_pk):
         'youtube_items': response_dict['items'],
     }
     return render(request, 'artist/artist_detail.html', context)
+
+
+def artist_add_youtube(request, artist_pk):
+    artist = get_object_or_404(Artist, pk=artist_pk)
+    # artist_pk에 해당하는 Artist에게
+    # request.POST로 전달된 youtube_id, title, url_thumbnail을 가지는
+    #   ArtistYouTube를 Artist의 youtube_videos에 추가
+    artist.youtube_videos.update_or_create(
+        youtube_id=request.POST['youtube_id'],
+        defaults={
+            'title': request.POST['title'],
+            'url_thumbnail': request.POST['url_thumbnail'],
+        }
+    )
+    next_path = request.POST.get(
+        'next-path',
+        # reverse('artist:artist-detail', args=[artist_pk]),
+        reverse('artist:artist-detail', kwargs={'artist_pk': artist_pk}),
+    )
+    return redirect(next_path)
