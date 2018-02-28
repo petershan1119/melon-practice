@@ -11,28 +11,40 @@
                 <div>{{ artist.birth_date }}</div>
                 <div>{{ artist.constellation }}</div>
                 <div>{{ artist.blood_type }}</div>
-                <div class="youtube-name">Youtube 관련 동영상</div>
-                <ul class="youtube-list"> {% for youtube in youtube_list %}
-                    <li><a href="{{ youtube.video_id }}" target="_blank">{{ youtube.title }}</a></li>
-                    {% endfor %}</ul>
-            <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
-                {% csrf_token %}
-                <button type="submit">수정</button>
-            </form>
+                <!--<div class="youtube-name">Youtube 관련 동영상</div>-->
+                <!--<ul class="youtube-list"> {% for youtube in youtube_list %}-->
+                <!--<li><a href="{{ youtube.video_id }}" target="_blank">{{ youtube.title }}</a></li>-->
+                <!--{% endfor %}</ul>-->
+                <form action="{% url 'artist:artist-edit' artist.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">수정</button>
+                </form>
 
-            {% if request.user.is_authenticated %}
-            <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
-                {% if request.user in artist.like_users.all %}
-                <button type="submit">좋아요 취소</button>
-                {% else %}
-                <button type="submit">좋아요</button>
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'artist:artist-like-toggle' artist_pk=artist.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
+                    {% if request.user in artist.like_users.all %}
+                    <button type="submit">좋아요 취소</button>
+                    {% else %}
+                    <button type="submit">좋아요</button>
+                    {% endif %}
+                </form>
                 {% endif %}
-            </form>
-            {% endif %}
-        </div>
+            </div>
         </li>
+    </ul>
+    </ul>
+    <h3>관련 YouTube영상</h3>
+    <ul class="youtube-search-list">
+        {% for item in youtube_items %}
+        <li>
+            <a href="https://youtu.be/{{ item.id.videoId }}" target="_blank">
+                <img src="{{ item.snippet.thumbnails.medium.url }}" alt="">
+            </a>
+            <div>{{ item.snippet.title }}</div>
+        </li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}
