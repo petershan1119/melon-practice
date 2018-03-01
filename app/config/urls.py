@@ -31,6 +31,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('signup/', signup_view, name='signup'),
     path('facebook-login/', facebook_login, name='facebook-login'),
+    path('sms/', include('sms.urls')),
 ]
 
 urlpatterns += static(
