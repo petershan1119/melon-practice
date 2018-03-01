@@ -11,7 +11,7 @@ from django.db import models
 
 from album.models import Album
 from artist.models import Artist
-from utils.file import download
+from utils.file import download, get_buffer_ext
 
 
 class SongManager(models.Manager):
@@ -144,7 +144,12 @@ class SongManager(models.Manager):
         song.artists.add(artist)
 
         # file_name = Path(url_img_cover).name
-        file_name, temp_file = download(url_img_cover, song_id)
+        # file_name, temp_file = download(url_img_cover, song_id)
+        temp_file = download(url_img_cover)
+        file_name = '{song_id}.{ext}'.format(
+            song_id=song_id,
+            ext=get_buffer_ext(temp_file),
+        )
         song.img_cover.save(file_name, File(temp_file))
         return song, song_created
 

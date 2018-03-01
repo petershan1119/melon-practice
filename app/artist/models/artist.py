@@ -2,8 +2,9 @@ from django.conf import settings
 from django.db import models
 
 from .artist_youtube import ArtistYouTube
-from .manager import ArtistManager
 from youtube.models import Youtube
+from .manager import ArtistManager
+
 
 
 __all__ = (

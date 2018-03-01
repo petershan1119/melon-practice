@@ -109,9 +109,9 @@ def song_search(request):
             q: Q
 
         song_infos = (
-            SongInfo(
-                type='아티스트명',
-                q=Q(album__artists__name__contains=keyword)),
+            # SongInfo(
+            #     type='아티스트명',
+            #     q=Q(album__artists__name__contains=keyword)),
             SongInfo(
                 type='앨범명',
                 q=Q(album__title__contains=keyword)),

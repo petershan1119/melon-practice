@@ -12,7 +12,7 @@ from django.db import models
 
 from artist.models import Artist
 from crawler.utils.parsing import get_dict_from_dl
-from utils.file import download
+from utils.file import download, get_buffer_ext
 
 
 class AlbumManager(models.Manager):
@@ -61,7 +61,13 @@ class AlbumManager(models.Manager):
             }
         )
         # file_name = Path(url_img_cover).name
-        file_name, temp_file = download(img_cover, album_id)
+        # file_name, temp_file = download(img_cover, album_id)
+
+        temp_file = download(img_cover)
+        file_name = '{album_id}.{ext}'.format(
+            album_id=album_id,
+            ext=get_buffer_ext(temp_file),
+        )
         album.img_cover.save(file_name, File(temp_file))
         return album, album_created
 
