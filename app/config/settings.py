@@ -28,6 +28,14 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'swhanwebservices@gmail.com'
+EMAIL_HOST_PASSWORD = 'ajaGAJAigija1939'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Sang Won Han <swhanwebservices@gmail.com>'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/

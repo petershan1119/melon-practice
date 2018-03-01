@@ -34,13 +34,12 @@
             </div>
         </li>
     </ul>
-	<hr>
-	<h3>관련 YouTube영상</h3>
+	<h3 class="youtube-list-title">관련 YouTube영상</h3>
 	<ul class="youtube-search-list">
 		{% for item in youtube_items %}
-		<li>
+		<li class="artist-detail-youtube">
 			<a href="https://youtu.be/{{ item.id.videoId }}" target="_blank">
-				<img src="{{ item.snippet.thumbnails.medium.url }}" alt="">
+				<img src="{{ item.snippet.thumbnails.medium.url }}" alt="" class="youtube-cover">
 			</a>
 			<div>{{ item.snippet.title }}</div>
 			<form action="{% url 'artist:artist-add-youtube' artist_pk=artist.pk %}" method="POST">

@@ -36,7 +36,7 @@
       box-sizing: border-box;
       border-bottom: 1px solid #ddd;
       padding: 15px;
-      height: 450px;
+      height: 200px;
 
       a {
         display: inline-block;
@@ -70,5 +70,17 @@
         }
       }
     }
+    > li.artist-detail-youtube {
+      padding-bottom: 5px;
+      padding-top: 10px;
+      height: 175px;
+
+      img.youtube-cover {
+        width: 150px;
+      }
+    }
   }
+}
+.youtube-list-title {
+  margin-bottom: 0px;
 }
