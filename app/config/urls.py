@@ -24,7 +24,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('artist/', include('artist.urls')),
+    path('artist/', include('artist.urls.views')),
     path('album/', include('album.urls')),
     path('song/', include('song.urls')),
     path('login/', login_view, name='login'),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('facebook-login/', facebook_login, name='facebook-login'),
     path('sms/', include('sms.urls')),
+
+    path('api/artist/', include('artist.urls.apis')),
 ]
 
 urlpatterns += static(
