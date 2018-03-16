@@ -1,9 +1,15 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.fields.files import FieldFile
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
 
 from .artist_youtube import ArtistYouTube
 from youtube.models import Youtube
 from .manager import ArtistManager
+from django.db.models.fields.files import FieldFile
+
 
 
 
@@ -96,7 +102,7 @@ class Artist(models.Model):
 
     def toggle_like_user(self, user):
         """
-        이 User의 특정 Artist를 연결하는 중개모델인 ArtistList인스턴스를
+        이 User의 특정 Artist를 연결하는 중개모델인s ArtistList인스턴스를
             없을 경우 생성, 있으면 삭제하는 메서드
         """
         # query = ArtistLike.objects.filter(artist=self, user=user)
@@ -111,3 +117,44 @@ class Artist(models.Model):
         if not like_created:
             like.delete()
         return like_created
+
+    def to_json(self):
+        user_class = get_user_model()
+
+        ret = model_to_dict(self)
+
+        # model_to_dict의 결과가 dict
+        # 해당 dict의 item을 순회하며
+        #   JSON Serialize할때 에러나는 타입의 value를
+        #   적절히 변환해서 value에 다시 대입
+        def convert_value(value):
+            if isinstance(value, FieldFile):
+                return value.url if value else None
+            elif isinstance(value, user_class):
+                return value.pk if value else None
+            elif isinstance(value, ArtistYouTube):
+                return value.pk if value else None
+            elif isinstance(value, Youtube):
+                return value.title if value else None
+            return value
+
+        def convert_obj(obj):
+            """
+            객체 또는 컨테이너 객체에 포함된 객체들 중
+            직렬화가 불가능한 객체를 가능하도록 형태를 변환해주는 함수
+            :param obj:
+            :return: convert_value()를 거친 객체
+            """
+            if isinstance(obj, list):
+                # list타입일 경우 각 항목을 순회하며 index에 해당하는 값을 변환
+                for index, item in enumerate(obj):
+                    obj[index] = convert_obj(item)
+            elif isinstance(obj, dict):
+                # dict타입일 경우 각 항목을 순회하며 key에 해당하는 값을 변환
+                for key, value in obj.items():
+                    obj[key] = convert_obj(value)
+            # list나 dict가 아닐 경우, 객체 자체를 변환한 값을 리턴
+            return convert_value(obj)
+
+        convert_obj(ret)
+        return ret
