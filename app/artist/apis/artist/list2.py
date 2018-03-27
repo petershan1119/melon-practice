@@ -38,10 +38,10 @@ class ArtistListCreateView(generics.ListCreateAPIView):
         print('request.users', request.user)
         return super().get(request, *args, **kwargs)
 
-    # permission_classes = (
-    #     permissions.IsAuthenticatedOrReadOnly,
-    #     IsOwnerOrReadOnly,
-    # )
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        # IsOwnerOrReadOnly,
+    )
     # def perform_create(self, serializer):
     #     serializer.save(owner=self.request.user)
 
